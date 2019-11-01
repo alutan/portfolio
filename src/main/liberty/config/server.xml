@@ -26,7 +26,6 @@
         <feature>jpa-2.2</feature>
         <feature>jwt-1.0</feature>
         <feature>mpJwt-1.1</feature>
-        <feature>mpMetrics-1.1</feature>
         <feature>jwtSso-1.0</feature>
 <!--    <feature>logstashCollector-1.0</feature> -->
     </featureManager>
