@@ -25,4 +25,4 @@ RUN chown -R 1001.0 /config /opt/ibm/wlp/usr/servers/defaultServer /opt/ibm/wlp/
 
 USER 1001
 
-RUN installUtility install --acceptLicense microprofile-3.0 jdbc-4.2 jms-2.0 jca-1.7 jndi-1.0 appsecurity-2.0 monitor-1.0 jpa-2.2 jwt-1.0 mpJwt-1.1 mpMetrics-1.1 jwtsso-1.0
+RUN installUtility install --acceptLicense microprofile-3.0 jdbc-4.2 jms-2.0 jca-1.7 jndi-1.0 appsecurity-2.0 monitor-1.0 jpa-2.2 jwt-1.0 mpJwt-1.1 jwtsso-1.0
