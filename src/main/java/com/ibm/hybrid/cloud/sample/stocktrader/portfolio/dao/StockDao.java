@@ -40,7 +40,16 @@ public class StockDao {
 
     public void updateStock(Stock stock) {
         em.merge(stock);
+           
+        if ((em.getTransaction() != null) &&
+            !em.getTransaction().isActive())
+              em.getTransaction().begin();
+        
         em.flush();
+           
+         if ((em.getTransaction() != null) &&
+            em.getTransaction().isActive())
+              em.getTransaction().commit();
     }
 
     public void deleteStock(Stock stock) {
