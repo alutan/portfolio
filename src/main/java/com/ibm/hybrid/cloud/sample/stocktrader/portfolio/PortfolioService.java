@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Base64;
 import java.util.UUID;
+import java.util.ArrayList;
 import java.util.List;
 
 //Logging (JSR 47)
@@ -289,7 +290,8 @@ public class PortfolioService extends Application {
 
 			logger.fine("Running following SQL: SELECT * FROM Stock WHERE owner = '"+owner+"'");
 			List<Stock> results = stockDAO.readStockByOwner(owner);
-
+			List<Stock> stocks = new ArrayList<Stock>();
+			
 			int count = 0;
 			logger.fine("Iterating over results");
 			for (Stock stock : results) {
@@ -313,15 +315,12 @@ public class PortfolioService extends Application {
 
 					total = shares * price;
 					
-					//TODO - is it OK to update rows (not adding or deleting) in the Stock table while iterating over its contents?
 					logger.info("Updated "+symbol+" entry for "+owner+" in Stock table");
 					stock.setDate(date);
 					stock.setPrice(price);
 					stock.setTotal(total);
 					stock.setPortfolio(portfolio);
-
-					stockDAO.updateStock(stock);
-					stockDAO.detachStock(stock);
+					stocks.add(stock);
 
 				} catch (Throwable t) {
 					logger.warning("Unable to get fresh stock quote.  Using cached values instead");
@@ -353,6 +352,13 @@ public class PortfolioService extends Application {
 				logger.info("Adding "+symbol+" to portfolio for "+owner);
 				portfolio.addStock(stock);
 			}
+			
+			for (int i = 0; i < stocks.size(); i++) {
+				Stock stock = stocks.get(i);
+				stockDAO.updateStock(stock);
+				stockDAO.detachStock(stock);
+			}
+
 			logger.info("Processed "+count+" stocks for "+owner);
 
 			portfolio.setTotal(overallTotal);
