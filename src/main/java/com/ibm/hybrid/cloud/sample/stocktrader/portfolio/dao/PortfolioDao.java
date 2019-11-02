@@ -40,16 +40,7 @@ public class PortfolioDao {
 
     public void updatePortfolio(Portfolio portfolio) {
         em.merge(portfolio);
-
-        if ((em.getTransaction() != null) &&
-            !em.getTransaction().isActive())
-              em.getTransaction().begin();
-        
         em.flush();
-           
-         if ((em.getTransaction() != null) &&
-            em.getTransaction().isActive())
-              em.getTransaction().commit();
     }
 
     public void deletePortfolio(Portfolio portfolio) {
