@@ -353,10 +353,16 @@ public class PortfolioService extends Application {
 				portfolio.addStock(stock);
 			}
 			
+			logger.info("Updating "+stocks.size()+" stocks");
 			for (int i = 0; i < stocks.size(); i++) {
 				Stock stock = stocks.get(i);
-				stockDAO.updateStock(stock);
-				stockDAO.detachStock(stock);
+				try {
+					logger.info("Updating "+stock.getSymbol()+" stock information");
+					stockDAO.updateStock(stock);
+					stockDAO.detachStock(stock);
+				} catch (Exception ex) {
+					logException(ex);
+				}
 			}
 
 			logger.info("Processed "+count+" stocks for "+owner);
