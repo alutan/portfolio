@@ -36,6 +36,6 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 public interface TradeHistoryClient {
     @GET
     @Path("/returns/{owner}")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces("application/json")
     public String getReturns(@HeaderParam("Authorization") String jwt, @PathParam("owner") String ownerName, @QueryParam("currentValue") Double portfolioValue);
 }
