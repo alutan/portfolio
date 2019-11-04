@@ -400,6 +400,7 @@ public class PortfolioService extends Application {
 	@Path("/{owner}/returns")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getPortfolioReturns(@PathParam("owner") String owner, @Context HttpServletRequest request) throws IOException, SQLException {
+		logger.info("Calling get portfolio for " + owner);
 		Double portfolioValue = getPortfolio(owner, request).getTotal();
 		String jwt = request.getHeader("Authorization");
 		logger.info("Getting portfolio returns for " + owner + " with portfolio value: " + portfolioValue);
