@@ -27,7 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Base64;
 import java.util.UUID;
-import java.util.ArrayList;
 import java.util.List;
 
 //Logging (JSR 47)
@@ -290,7 +289,6 @@ public class PortfolioService extends Application {
 
 			logger.fine("Running following SQL: SELECT * FROM Stock WHERE owner = '"+owner+"'");
 			List<Stock> results = stockDAO.readStockByOwner(owner);
-			List<Stock> stocks = new ArrayList<Stock>();
 			
 			int count = 0;
 			logger.fine("Iterating over results");
@@ -320,8 +318,12 @@ public class PortfolioService extends Application {
 					stock.setPrice(price);
 					stock.setTotal(total);
 					stock.setPortfolio(portfolio);
-					stocks.add(stock);
-
+					try {
+						stockDAO.updateStock(stock);
+						stockDAO.detachStock(stock);
+					} catch (Exception ex) {
+						logException(ex);
+					}
 				} catch (Throwable t) {
 					logger.warning("Unable to get fresh stock quote.  Using cached values instead");
 					logException(t);
@@ -352,18 +354,6 @@ public class PortfolioService extends Application {
 				logger.info("Adding "+symbol+" to portfolio for "+owner);
 				portfolio.addStock(stock);
 			}
-			
-			logger.info("Updating "+stocks.size()+" stocks");
-			for (int i = 0; i < stocks.size(); i++) {
-				Stock stock = stocks.get(i);
-				try {
-					logger.info("Updating "+stock.getSymbol()+" stock information");
-					stockDAO.updateStock(stock);
-					stockDAO.detachStock(stock);
-				} catch (Exception ex) {
-					logException(ex);
-				}
-			}
 
 			logger.info("Processed "+count+" stocks for "+owner);
 
@@ -376,7 +366,11 @@ public class PortfolioService extends Application {
 			portfolio.setFree(free);
 			portfolio.setNextCommission(free>0 ? 0.0 : getCommission(loyalty));
 
-			portfolioDAO.updatePortfolio(portfolio);
+			try {
+				portfolioDAO.updatePortfolio(portfolio);
+			} catch (Exception ex) {
+				logException(ex);
+			}
 
 			logger.info("Returning "+portfolio.toString());
 		} else {
