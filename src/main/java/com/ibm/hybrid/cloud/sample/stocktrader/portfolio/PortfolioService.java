@@ -402,6 +402,7 @@ public class PortfolioService extends Application {
 	public String getPortfolioReturns(@PathParam("owner") String owner, @Context HttpServletRequest request) throws IOException, SQLException {
 		Double portfolioValue = getPortfolio(owner, request).getTotal();
 		String jwt = request.getHeader("Authorization");
+		logger.info("Getting portfolio returns for " + owner + " with portfolio value: " + portfolioValue);
 		return tradeHistoryClient.getReturns(jwt, owner, portfolioValue);
 	}
 
