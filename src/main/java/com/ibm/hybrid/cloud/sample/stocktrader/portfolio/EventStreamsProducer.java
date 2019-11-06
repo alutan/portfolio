@@ -52,7 +52,7 @@ public class EventStreamsProducer {
 
     private KafkaProducer<String, String> kafkaProducer;
     
-    private Logger logger = Logger.getLogger(EventStreamsProducer.class.getName());
+    private static Logger logger = Logger.getLogger(EventStreamsProducer.class.getName());
 
     public EventStreamsProducer(String bootstrapServerAddress, String topic) throws InstantiationException {
         this.topic = topic;
