@@ -16,6 +16,8 @@
 
 package com.ibm.hybrid.cloud.sample.stocktrader.portfolio.dao;
 
+import javax.annotation.Resource;
+
 import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
