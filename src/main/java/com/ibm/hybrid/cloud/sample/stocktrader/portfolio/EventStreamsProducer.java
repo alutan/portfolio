@@ -19,6 +19,13 @@ package com.ibm.hybrid.cloud.sample.stocktrader.portfolio;
 import java.net.ConnectException;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+//Logging (JSR 47)
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.kafka.clients.CommonClientConfigs;
@@ -91,6 +98,7 @@ public class EventStreamsProducer {
             logger.warning("Error while creating producer: "+kafkaError.getMessage());
             Throwable cause = kafkaError.getCause();
             if (cause != null) logger.warning("Caused by: "+cause.getMessage());
+            logException(kafkaError);
             throw kafkaError;
         }
         return kafkaProducer;
@@ -106,4 +114,16 @@ public class EventStreamsProducer {
         kafkaProducer.flush();
         kafkaProducer.close();
     }
+       
+    private static void logException(Throwable t) {
+	logger.warning(t.getClass().getName()+": "+t.getMessage());
+
+	//only log the stack trace if the level has been set to at least the specified level
+	if (logger.isLoggable(Level.INFO)) {
+		StringWriter writer = new StringWriter();
+		t.printStackTrace(new PrintWriter(writer));
+		logger.info(writer.toString());
+	}
+}       
+
 }
