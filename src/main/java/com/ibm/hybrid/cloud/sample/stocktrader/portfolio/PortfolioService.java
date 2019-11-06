@@ -318,12 +318,10 @@ public class PortfolioService extends Application {
 					stock.setPrice(price);
 					stock.setTotal(total);
 					stock.setPortfolio(portfolio);
-					try {
-						stockDAO.updateStock(stock);
-						stockDAO.detachStock(stock);
-					} catch (Exception ex) {
-						logException(ex);
-					}
+
+					stockDAO.updateStock(stock);
+					stockDAO.detachStock(stock);
+
 				} catch (Throwable t) {
 					logger.warning("Unable to get fresh stock quote.  Using cached values instead");
 					logException(t);
@@ -366,11 +364,7 @@ public class PortfolioService extends Application {
 			portfolio.setFree(free);
 			portfolio.setNextCommission(free>0 ? 0.0 : getCommission(loyalty));
 
-			try {
-				portfolioDAO.updatePortfolio(portfolio);
-			} catch (Exception ex) {
-				logException(ex);
-			}
+			portfolioDAO.updatePortfolio(portfolio);
 
 			logger.info("Returning "+portfolio.toString());
 		} else {
