@@ -20,7 +20,7 @@ import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.UserTransaction;
+import javax.transaction.UserTransaction;
 import java.util.List;
 
 import com.ibm.hybrid.cloud.sample.stocktrader.portfolio.json.Stock;
