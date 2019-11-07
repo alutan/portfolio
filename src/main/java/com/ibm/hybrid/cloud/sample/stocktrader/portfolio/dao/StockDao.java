@@ -16,19 +16,20 @@
 
 package com.ibm.hybrid.cloud.sample.stocktrader.portfolio.dao;
 
-import javax.annotation.Resource;
+//import javax.annotation.Resource;
 
-import javax.enterprise.context.RequestScoped;
+//import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 //import javax.persistence.PersistenceContext;
 //import javax.transaction.UserTransaction;
 import java.util.List;
 
 import com.ibm.hybrid.cloud.sample.stocktrader.portfolio.json.Stock;
 
-@RequestScoped
+//@RequestScoped
 public class StockDao {
 
 //    @PersistenceContext(name = "jpa-unit")
