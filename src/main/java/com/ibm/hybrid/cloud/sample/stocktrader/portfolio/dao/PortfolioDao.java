@@ -71,19 +71,8 @@ public class PortfolioDao {
     public void updatePortfolio(Portfolio portfolio) {
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
-//        try {
-//              utx.begin();
-              em.merge(portfolio);
-              em.flush();
-//              utx.commit();
-//        } catch (Exception ex) {
-//              try {
-//                     System.out.println("Update failed: "+ex.getMessage());
-//                     utx.rollback();
-//              } catch (Exception exe) {
-//                     System.out.println("Rollback failed: "+exe.getMessage());
-//              }
-//        }
+        em.merge(portfolio);
+        em.flush();
         em.getTransaction().commit();
     }
 
