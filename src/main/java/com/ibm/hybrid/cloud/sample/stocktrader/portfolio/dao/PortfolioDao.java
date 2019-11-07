@@ -16,40 +16,41 @@
 
 package com.ibm.hybrid.cloud.sample.stocktrader.portfolio.dao;
 
-//import javax.annotation.Resource;
-
-//import javax.enterprise.context.RequestScoped;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-//import javax.persistence.PersistenceContext;
-//import javax.transaction.UserTransaction;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ibm.hybrid.cloud.sample.stocktrader.portfolio.json.Portfolio;
 
-//@RequestScoped
 public class PortfolioDao {
-
-//    @PersistenceContext(name = "jpa-unit")
-//    private EntityManager em;
-
-//    @Resource
-//    private UserTransaction utx;
     
     private EntityManager em = null;
     private static EntityManagerFactory emFactoryObj;
- 
+
     static {
-        emFactoryObj = Persistence.createEntityManagerFactory("jpa-unit");
+           emFactoryObj = createEntityManagerFactory();
     }
- 
+       
+    public static EntityManagerFactory createEntityManagerFactory() {
+        String JDBC_URL = 
+               "jdbc:db2://" + System.getenv("JDBC_HOST") + ":" + 
+               System.getenv("JDBC_PORT") + "/" System.getenv("JDBC_DB");
+        Map properties = new HashMap();
+        properties.put(JDBC_DRIVER, "com.ibm.db2.jcc.DB2Driver");
+        properties.put(JDBC_URL, JDBC_URL);
+        properties.put(JDBC_USER, System.getenv("JDBC_ID");
+        properties.put(JDBC_PASSWORD, System.getenv("JDBC_PASSWORD");
+        return Persistence.createEntityManagerFactory("jpa-unit", properties);           
+    }
+  
     // This Method Is Used To Retrieve The 'EntityManager' Object
     public EntityManager getEntityManager() {
         if (em == null) {
               if (emFactoryObj == null)
-                     emFactoryObj = Persistence.createEntityManagerFactory("jpa-unit");
+                     emFactoryObj = emFactoryObj = createEntityManagerFactory();
               em = emFactoryObj.createEntityManager();
         }
         return em ;
