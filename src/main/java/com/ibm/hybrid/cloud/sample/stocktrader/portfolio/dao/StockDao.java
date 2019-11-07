@@ -72,7 +72,7 @@ public class StockDao {
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
         em.merge(stock);
-        //em.flush();
+        em.flush();
         em.getTransaction().commit();
     }
 
