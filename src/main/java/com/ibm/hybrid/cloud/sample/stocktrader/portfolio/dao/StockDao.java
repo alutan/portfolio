@@ -22,6 +22,7 @@ import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 //import javax.transaction.UserTransaction;
 import java.util.List;
 
