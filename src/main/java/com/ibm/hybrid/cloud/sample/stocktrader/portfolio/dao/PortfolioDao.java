@@ -22,7 +22,7 @@ import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.UserTransaction;
+//import javax.transaction.UserTransaction;
 import java.util.List;
 
 import com.ibm.hybrid.cloud.sample.stocktrader.portfolio.json.Portfolio;
@@ -30,11 +30,11 @@ import com.ibm.hybrid.cloud.sample.stocktrader.portfolio.json.Portfolio;
 @RequestScoped
 public class PortfolioDao {
 
-    @PersistenceContext(name = "jpa-unit")
+    @PersistenceContext(name = "jpa-unit", type=PersistenceContextType.EXTENDED)
     private EntityManager em;
 
-    @Resource
-    private UserTransaction utx;
+//    @Resource
+//    private UserTransaction utx;
     
     public void createPortfolio(Portfolio portfolio) {
         em.persist(portfolio);
@@ -46,17 +46,17 @@ public class PortfolioDao {
 
     public void updatePortfolio(Portfolio portfolio) {
         try {
-              utx.begin();
+//              utx.begin();
               em.merge(portfolio);
               em.flush();
-              utx.commit();
+//              utx.commit();
         } catch (Exception ex) {
-              try {
+//              try {
                      System.out.println("Update failed: "+ex.getMessage());
-                     utx.rollback();
-              } catch (Exception exe) {
-                     System.out.println("Rollback failed: "+exe.getMessage());
-              }
+//                     utx.rollback();
+//              } catch (Exception exe) {
+//                     System.out.println("Rollback failed: "+exe.getMessage());
+//              }
         }
     }
 
