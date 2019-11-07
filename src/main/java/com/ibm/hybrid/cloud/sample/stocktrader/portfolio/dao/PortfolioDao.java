@@ -39,10 +39,10 @@ public class PortfolioDao {
                "jdbc:db2://" + System.getenv("JDBC_HOST") + ":" + 
                System.getenv("JDBC_PORT") + "/" + System.getenv("JDBC_DB");
         Map properties = new HashMap();
-        properties.put(JDBC_DRIVER, "com.ibm.db2.jcc.DB2Driver");
-        properties.put(JDBC_URL, JDBC_URL);
-        properties.put(JDBC_USER, System.getenv("JDBC_ID"));
-        properties.put(JDBC_PASSWORD, System.getenv("JDBC_PASSWORD"));
+        properties.put("javax.persistence.jdbc.driver", "com.ibm.db2.jcc.DB2Driver");
+        properties.put("javax.persistence.jdbc.url", JDBC_URL);
+        properties.put("javax.persistence.jdbc.user", System.getenv("JDBC_ID"));
+        properties.put("javax.persistence.jdbc.password", System.getenv("JDBC_PASSWORD"));
         return Persistence.createEntityManagerFactory("jpa-unit", properties);           
     }
   
