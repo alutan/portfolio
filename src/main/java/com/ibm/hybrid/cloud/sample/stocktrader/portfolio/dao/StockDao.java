@@ -41,8 +41,8 @@ public class StockDao {
         Map properties = new HashMap();
         properties.put(JDBC_DRIVER, "com.ibm.db2.jcc.DB2Driver");
         properties.put(JDBC_URL, JDBC_URL);
-        properties.put(JDBC_USER, System.getenv("JDBC_ID");
-        properties.put(JDBC_PASSWORD, System.getenv("JDBC_PASSWORD");
+        properties.put(JDBC_USER, System.getenv("JDBC_ID"));
+        properties.put(JDBC_PASSWORD, System.getenv("JDBC_PASSWORD"));
         return Persistence.createEntityManagerFactory("jpa-unit", properties);           
     }
        
