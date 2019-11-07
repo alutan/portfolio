@@ -44,7 +44,7 @@ public class Stock {
     @Column(name="dateQuoted")
     private String date;
 
-    @Id
+    //@Id
     @ManyToOne
     @JoinColumn(name = "owner")
     private Portfolio portfolio;
