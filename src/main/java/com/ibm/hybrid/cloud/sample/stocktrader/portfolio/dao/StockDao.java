@@ -72,8 +72,8 @@ public class StockDao {
         EntityManager em = getEntityManager();
         em.getTransaction().begin();
         em.merge(stock);
-        em.flush();
-       em.getTransaction().commit();
+        //em.flush();
+        em.getTransaction().commit();
     }
 
     public void deleteStock(Stock stock) {
