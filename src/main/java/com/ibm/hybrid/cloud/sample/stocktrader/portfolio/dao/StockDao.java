@@ -21,8 +21,7 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+//import javax.persistence.PersistenceContext;
 //import javax.transaction.UserTransaction;
 import java.util.List;
 
@@ -31,49 +30,81 @@ import com.ibm.hybrid.cloud.sample.stocktrader.portfolio.json.Stock;
 @RequestScoped
 public class StockDao {
 
-    @PersistenceContext(name = "jpa-unit", type=PersistenceContextType.EXTENDED)
-    private EntityManager em;
+//    @PersistenceContext(name = "jpa-unit")
+//    private EntityManager em;
 
 //    @Resource
 //    private UserTransaction utx;
+ 
+    private EntityManager em = null;
+    private static final EntityManagerFactory emFactoryObj;
+ 
+    static {
+        emFactoryObj = Persistence.createEntityManagerFactory("jpa-unit");
+    }
+ 
+    // This Method Is Used To Retrieve The 'EntityManager' Object
+    public EntityManager getEntityManager() {
+        if (em == null) {
+              if (emFactoryObj == null)
+                     emFactoryObj = Persistence.createEntityManagerFactory("jpa-unit");
+              em = emFactoryObj.createEntityManager();
+        }
+        return em ;
+    }
        
     public void createStock(Stock stock) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
         em.persist(stock);
+        em.getTransaction().commit();
     }
 
     public Stock readEvent(String symbol) {
+        EntityManager em = getEntityManager();
         return em.find(Stock.class, symbol);
     }
 
     public void updateStock(Stock stock) {
-        try {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+//        try {
 //              utx.begin();
-              em.merge(stock);
-              em.flush();
+        em.merge(stock);
+        em.flush();
 //              utx.commit();
-        } catch (Exception ex) {
+//        } catch (Exception ex) {
 //              try {
-                     System.out.println("Update failed: "+ex.getMessage());
+//                     System.out.println("Update failed: "+ex.getMessage());
 //                     utx.rollback();
 //              } catch (Exception exe) {
 //                     System.out.println("Rollback failed: "+exe.getMessage());
 //              }
-        }
+//        }
+       em.getTransaction().commit();
     }
 
     public void deleteStock(Stock stock) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
         em.remove(em.merge((stock)));
+        em.getTransaction().commit();
     }
 
     public void detachStock(Stock stock) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
         em.detach(stock);
+        em.getTransaction().commit();
     }
 
     public List<Stock> readStockByOwner(String owner) {
+        EntityManager em = getEntityManager();
         return em.createNamedQuery("Stock.findByOwner", Stock.class)
             .setParameter("owner", owner).getResultList();
     }
     public List<Stock> readStockByOwnerAndSymbol(String owner, String symbol) {
+        EntityManager em = getEntityManager();
         return em.createNamedQuery("Stock.findByOwnerAndSymbol", Stock.class)
             .setParameter("owner", owner)
             .setParameter("symbol", symbol).getResultList();
