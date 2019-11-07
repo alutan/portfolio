@@ -21,8 +21,7 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+//import javax.persistence.PersistenceContext;
 //import javax.transaction.UserTransaction;
 import java.util.List;
 
@@ -31,41 +30,69 @@ import com.ibm.hybrid.cloud.sample.stocktrader.portfolio.json.Portfolio;
 @RequestScoped
 public class PortfolioDao {
 
-    @PersistenceContext(name = "jpa-unit", type=PersistenceContextType.EXTENDED)
+    @PersistenceContext(name = "jpa-unit")
     private EntityManager em;
 
 //    @Resource
 //    private UserTransaction utx;
     
+    private EntityManager em = null;
+    private static final EntityManagerFactory emFactoryObj;
+ 
+    static {
+        emFactoryObj = Persistence.createEntityManagerFactory("jpa-unit");
+    }
+ 
+    // This Method Is Used To Retrieve The 'EntityManager' Object
+    public EntityManager getEntityManager() {
+        if (em == null) {
+              if (emFactoryObj == null)
+                     emFactoryObj = Persistence.createEntityManagerFactory("jpa-unit");
+              em = emFactoryObj.createEntityManager();
+        }
+        return em ;
+    }
+
     public void createPortfolio(Portfolio portfolio) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
         em.persist(portfolio);
+        em.getTransaction().commit();         
     }
 
     public Portfolio readEvent(String owner) {
+        EntityManager em = getEntityManager();
         return em.find(Portfolio.class, owner);
     }
 
     public void updatePortfolio(Portfolio portfolio) {
-        try {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+//        try {
 //              utx.begin();
               em.merge(portfolio);
               em.flush();
 //              utx.commit();
-        } catch (Exception ex) {
+//        } catch (Exception ex) {
 //              try {
-                     System.out.println("Update failed: "+ex.getMessage());
+//                     System.out.println("Update failed: "+ex.getMessage());
 //                     utx.rollback();
 //              } catch (Exception exe) {
 //                     System.out.println("Rollback failed: "+exe.getMessage());
 //              }
-        }
+//        }
+        em.getTransaction().commit();
     }
 
     public void deletePortfolio(Portfolio portfolio) {
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
         em.remove(em.merge(portfolio));
+        em.getTransaction().commit();
     }
 
     public List<Portfolio> readAllPortfolios() {
+        EntityManager em = getEntityManager();
         return em.createNamedQuery("Portfolio.findAll", Portfolio.class).getResultList();
     }
 
