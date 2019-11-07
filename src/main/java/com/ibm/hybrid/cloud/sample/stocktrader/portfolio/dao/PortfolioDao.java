@@ -39,7 +39,7 @@ public class PortfolioDao {
 //    private UserTransaction utx;
     
     private EntityManager em = null;
-    private static final EntityManagerFactory emFactoryObj;
+    private static EntityManagerFactory emFactoryObj;
  
     static {
         emFactoryObj = Persistence.createEntityManagerFactory("jpa-unit");
