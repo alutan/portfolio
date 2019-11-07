@@ -674,9 +674,11 @@ public class PortfolioService extends Application {
 	
 			double price = -1;
 			String owner = portfolio.getOwner();
-			JsonObject stock = portfolio.getStocks();
+			JsonObject stocks = portfolio.getStocks();
 
-			if (stock != null) { //rather than calling stock-quote again, get it from the portfolio we just built
+			if ((stocks != null) &&
+			    (stocks.getJsonObject(symbol) != null)) { //rather than calling stock-quote again, get it from the portfolio we just built
+				JsonObject stock = stocks.getJsonObject(symbol);
 				logger.info("Stock price for "+symbol+": " + stock.getJsonNumber("price"));
 				price = stock.getJsonNumber("price").doubleValue();
 			} else {
