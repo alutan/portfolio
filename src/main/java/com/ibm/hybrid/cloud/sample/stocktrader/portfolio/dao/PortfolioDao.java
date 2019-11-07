@@ -31,7 +31,7 @@ import com.ibm.hybrid.cloud.sample.stocktrader.portfolio.json.Portfolio;
 public class PortfolioDao {
 
     @PersistenceContext(name = "jpa-unit")
-    private EntityManager em;
+//    private EntityManager em;
 
 //    @Resource
 //    private UserTransaction utx;
