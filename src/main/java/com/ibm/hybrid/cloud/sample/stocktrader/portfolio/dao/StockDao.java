@@ -52,6 +52,7 @@ public class StockDao {
               utx.commit();
         } catch (Exception ex) {
               try {
+                     System.out.println("Update failed: "+ex.getMessage());
                      utx.rollback();
               } catch (Exception exe) {
                      System.out.println("Rollback failed: "+exe.getMessage());
