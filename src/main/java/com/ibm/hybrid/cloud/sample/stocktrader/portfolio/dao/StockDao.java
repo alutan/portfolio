@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 //import javax.persistence.PersistenceContext;
 //import javax.transaction.UserTransaction;
 import java.util.List;
