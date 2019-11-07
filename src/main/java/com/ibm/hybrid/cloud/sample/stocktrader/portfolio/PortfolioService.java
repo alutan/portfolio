@@ -317,7 +317,7 @@ public class PortfolioService extends Application {
 					stock.setDate(date);
 					stock.setPrice(price);
 					stock.setTotal(total);
-					//stock.setPortfolio(portfolio);
+					stock.setPortfolio(portfolio);
 
 					stockDAO.updateStock(stock);
 					stockDAO.detachStock(stock);
