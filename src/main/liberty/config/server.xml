@@ -48,6 +48,10 @@
     <logstashCollector source="message,trace,ffdc,accessLog" hostName="logstash" port="5044"/>
 -->
 
+    <library id="db2driver">
+       <fileset dir="/config/" includes="db2jcc4.jar" scanInterval="5s" />
+    </library>
+       
     <connectionManager id="DB2-Connections" minPoolSize="5" maxPoolSize="50"/>
     <dataSource id="PortfolioDB" jndiName="jdbc/Portfolio/PortfolioDB" connectionManagerRef="DB2-Connections" isolationLevel="TRANSACTION_READ_COMMITTED">
         <jdbcDriver>
@@ -114,6 +118,7 @@
         useOnlyCustomCookieName="true" ssoUseDomainFromURL="true"/>
 
     <webApplication id="Portfolio" name="Portfolio" location="Portfolio.war" contextRoot="/portfolio">
+        <classloader commonLibraryRef="db2driver" />
         <application-bnd>
             <security-role id="StockTrader" name="StockTrader">
                 <special-subject type="ALL_AUTHENTICATED_USERS" id="IBMid"/>
