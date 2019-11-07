@@ -315,6 +315,7 @@ public class PortfolioService extends Application {
 					
 					logger.info("Updated "+symbol+" entry for "+owner+" in Stock table");
 					stock.setDate(date);
+					logger.info("Updating stock price for "+symbol+" to : " + price);
 					stock.setPrice(price);
 					stock.setTotal(total);
 					stock.setPortfolio(portfolio);
@@ -343,6 +344,7 @@ public class PortfolioService extends Application {
 				}
 
 				stock.setDate(date);
+				logger.info("Setting stock price for "+symbol+" to : " + price);
 				stock.setPrice(price);
 				stock.setTotal(total);
 
@@ -367,6 +369,12 @@ public class PortfolioService extends Application {
 			portfolioDAO.updatePortfolio(portfolio);
 
 			logger.info("Returning "+portfolio.toString());
+			
+			JsonObject portfolioStock = portfolio.getStocks();
+
+			if (portfolioStock != null)
+				logger.info("Portfolio stock price for "+symbol+": " + stock.getJsonNumber("price"));
+
 		} else {
 			portfolio = new Portfolio(); //so we don't return null
 			logger.warning("No portfolio found for "+owner); //shouldn't get here; an exception with a 404 should be thrown instead
@@ -669,6 +677,7 @@ public class PortfolioService extends Application {
 			JsonObject stock = portfolio.getStocks();
 
 			if (stock != null) { //rather than calling stock-quote again, get it from the portfolio we just built
+				logger.info("Stock price for "+symbol+": " + stock.getJsonNumber("price"));
 				price = stock.getJsonNumber("price").doubleValue();
 			} else {
 				logger.warning("Unable to get the stock price.  Skipping sending the StockPurchase to Kafka");
