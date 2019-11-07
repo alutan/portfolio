@@ -373,7 +373,7 @@ public class PortfolioService extends Application {
 			JsonObject portfolioStock = portfolio.getStocks();
 
 			if (portfolioStock != null)
-				logger.info("Portfolio stocks price: " + stock.getJsonNumber("price"));
+				logger.info("Portfolio stocks price: " + portfolioStock.getJsonNumber("price"));
 
 		} else {
 			portfolio = new Portfolio(); //so we don't return null
