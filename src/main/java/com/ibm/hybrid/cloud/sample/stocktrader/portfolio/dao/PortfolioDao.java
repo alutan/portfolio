@@ -37,7 +37,7 @@ public class PortfolioDao {
     public static EntityManagerFactory createEntityManagerFactory() {
         String JDBC_URL = 
                "jdbc:db2://" + System.getenv("JDBC_HOST") + ":" + 
-               System.getenv("JDBC_PORT") + "/" System.getenv("JDBC_DB");
+               System.getenv("JDBC_PORT") + "/" + System.getenv("JDBC_DB");
         Map properties = new HashMap();
         properties.put(JDBC_DRIVER, "com.ibm.db2.jcc.DB2Driver");
         properties.put(JDBC_URL, JDBC_URL);
