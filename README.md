@@ -53,7 +53,7 @@ the *server.xml* to reference it and specify any database-specific settings.  No
 when changing *JDBC* providers.  The database can either be another pod in the same *Kubernetes* environment, or
 it can be running on "bare metal" in a traditional on-premises environment.  Endpoint and credential info is
 specified in the *Kubernetes* secret and made available as environment variables to the server.xml of WebSphere
-Liberty.  See the *manifests/portfolio-values.yaml* for details.
+Liberty.
 
 ### Prerequisites for OCP Deployment
  This project requires two secrets: `jwt`, `db2`, `mq`, `watson`, `odm`, `kafka`, `kafka-keystore`, and `urls`.
