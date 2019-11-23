@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: List
+items:
+- kind: ProjectRequest
+  apiVersion: v1
+  metadata:
+    name: portfolio-liberty-build
+    creationTimestam: null
+  displayName: Portfolio on Liberty - Build
+- kind: ProjectRequest
+  apiVersion: v1
+  metadata:
+    name: portfolio-liberty-dev
+    creationTimestam: null
+  displayName: Portfolio on Liberty - Dev
+- kind: ProjectRequest
+  apiVersion: v1
+  metadata:
+    name: portfolio-liberty-stage
+    creationTimestam: null
+  displayName: Portfolio on Liberty - Stage
+- kind: ProjectRequest
+  apiVersion: v1
+  metadata:
+    name: portfolio-liberty-prod
+    creationTimestam: null
+  displayName: Portfolio on Liberty - Prod
