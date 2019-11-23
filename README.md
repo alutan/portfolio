@@ -37,7 +37,7 @@ fields named *symbol*, *shares*, *commission*, *price*, *total*, and *date*.  Th
 query params is the `PUT` operation, which expects params named *symbol* and *shares*.  Also, the `feedback`
 operation takes a JSON object in the http body, with a single field named *text*.
 
-For example, doing a `PUT http://localhost:9080/portfolio/John?symbol=IBM&shares=123` (against a freshly
+For example, doing a `PUT http://<hostname>:9080/portfolio/John?symbol=IBM&shares=123` (against a freshly
 created portfolio for *John*) would return *JSON* like `{"owner": "John", "total": 19120.35, "loyalty": "Bronze",
 "balance": 40.01, "commissions": 9.99, "free": 0, "sentiment": "Unknown", "nextCommission": 8.99, "stocks":
 [{"symbol": "IBM", "shares": 123, "commission": 9.99, "price": 155.45, "total": 19120.35, "date": "2017-06-26"}]}`.
@@ -55,46 +55,26 @@ it can be running on "bare metal" in a traditional on-premises environment.  End
 specified in the *Kubernetes* secret and made available as environment variables to the server.xml of WebSphere
 Liberty.  See the *manifests/portfolio-values.yaml* for details.
 
-### Prerequisites for ICP Deployment
- This project requires two secrets: `jwt` and `db2`.  You can get the DB2 values from inspecting your DB2 secrets.
-  ```bash
-  kubectl create secret generic jwt -n stock-trader --from-literal=audience=stock-trader --from-literal=issuer=http://stock-trader.ibm.com
-  
-  kubectl create secret generic db2 --from-literal=id=<DB2_USERNAME> --from-literal=pwd=<DB2_PASSWORD> --from-literal=host=<DB2_SVC_NAME> --from-literal=port=50000 --from-literal=db=<TRADER_DB_NAME>
-  
-  # Example db2:
-  kubectl create secret generic db2 --from-literal=id=db2inst1 --from-literal=pwd=db2inst1 --from-literal=host=trader-ibm-db2oltp-dev --from-literal=port=50000 --from-literal=db=trader
-  ```
-  
-  You'll also need to enable login to the IBM Cloud Private internal Docker registry by following [these steps]
-  (https://www.ibm.com/support/knowledgecenter/en/SSBS6K_2.1.0/manage_images/configuring_docker_cli.html).  Don't 
-  forget to restart Docker after adding your cert.  On macOS you can restart Docker by running:
-  ```bash
-  osascript -e 'quit app "Docker"'
-  open -a Docker
-  ```
+### Prerequisites for OCP Deployment
+ This project requires two secrets: `jwt`, `db2`, `mq`, `watson`, `odm`, `kafka`, `kafka-keystore`, and `urls`.
  
- ### Build and Deploy to ICP
+ ### Build and Deploy to OCP
 To build `portfolio` clone this repo and run:
-```bash
-mvn package
-docker build -t portfolio:latest -t <ICP_CLUSTER>.icp:8500/stock-trader/portfolio:latest .
-docker tag portfolio:latest <ICP_CLUSTER>.icp:8500/stock-trader/portfolio:latest
-docker push <ICP_CLUSTER>.icp:8500/stock-trader/portfolio:latest
 ```
+cd templates
 
-Use WebSphere Liberty helm chart to deploy Portfolio microservice to ICP:
-```bash
-helm repo add ibm-charts https://raw.githubusercontent.com/IBM/charts/master/repo/stable/
-helm install ibm-charts/ibm-websphere-liberty -f <VALUES_YAML> -n <RELEASE_NAME> --tls
-```
+oc create -f portfolio-liberty-projects.yaml
 
-In practice this means you'll run something like:
-```bash
-docker build -t portfolio:latest -t mycluster.icp:8500/stock-trader/portfolio:latest .
-docker tag portfolio:latest mycluster.icp:8500/stock-trader/portfolio:latest
-docker push mycluster.icp:8500/stock-trader/portfolio:latest
+oc create -f portfolio-liberty-deploy.yaml -n portfolio-liberty-dev
+oc create -f portfolio-liberty-deploy.yaml -n portfolio-liberty-stage
+oc create -f portfolio-liberty-deploy.yaml -n portfolio-liberty-prod
 
-helm repo add ibm-charts https://raw.githubusercontent.com/IBM/charts/master/repo/stable/
-helm install ibm-charts/ibm-websphere-liberty -f manifests/portfolio-values.yaml -n portfolio --namespace stock-trader --tls
+oc new-app portfolio-liberty-deploy -n portfolio-liberty-dev
+oc new-app portfolio-liberty-deploy -n portfolio-liberty-stage
+oc new-app portfolio-liberty-deploy -n portfolio-liberty-prod
+
+oc create -f portfolio-liberty-build.yaml -n portfolio-liberty-build
+
+oc new-app portfolio-liberty-build -n portfolio-liberty-build
+
 ```
