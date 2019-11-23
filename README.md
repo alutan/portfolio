@@ -56,7 +56,7 @@ specified in the *Kubernetes* secret and made available as environment variables
 Liberty.
 
 ### Prerequisites for OCP Deployment
- This project requires two secrets: `jwt`, `db2`, `mq`, `watson`, `odm`, `kafka`, `kafka-keystore`, and `urls`.
+ This project requires eight secrets: `jwt`, `db2`, `mq`, `watson`, `odm`, `kafka`, `kafka-keystore`, and `urls`.
  
  ### Build and Deploy to OCP
 To build `portfolio` clone this repo and run:
